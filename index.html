@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASUS Router Training Mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="loginScreen" class="login-wrap">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="asus-word">ASUS</div>
+        <div class="subtitle">Wireless Router Training Interface</div>
+      </div>
+
+      <div class="login-panel">
+        <h1>Sign in</h1>
+        <p class="muted">Mock classroom interface inspired by ASUSWRT layout.</p>
+        <label>Username</label>
+        <input id="username" type="text" value="admin" />
+        <label>Password</label>
+        <input id="password" type="password" value="admin123" />
+        <button id="loginBtn" class="btn primary">Sign In</button>
+        <div id="loginMsg" class="login-msg"></div>
+
+        <div class="training-note">
+          <strong>Training login</strong><br>
+          admin / admin123
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <div class="sim-banner">This is a Web GUI simulator, only for demonstration purposes.</div>
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">ASUS</div>
+        <div class="model">ZenWiFi AX Classroom Demo</div>
+      </div>
+      <nav class="top-tabs">
+        <button class="tab active" data-tab="general">General</button>
+        <button class="tab" data-tab="advanced">Advanced Settings</button>
+        <button class="tab" data-tab="tools">Network Tools</button>
+      </nav>
+      <div class="topbar-right">
+        <button class="btn ghost small">Reboot</button>
+        <span class="fw">English</span>
+        <button id="logoutBtn" class="btn ghost small">Logout</button>
+      </div>
+    </header>
+
+    <div class="op-strip">
+      <span>Operation Mode: <strong>Wireless router</strong></span>
+      <span>Firmware Version: <strong>9.0.0.4.386_mock</strong></span>
+      <span>SSID: <strong id="opSsid">SpectraHome_2.4G / SpectraHome_5G</strong></span>
+    </div>
+    <div class="main-shell">
+      <aside class="sidebar">
+        <div class="router-summary">
+          <div class="router-icon"></div>
+          <div>
+            <div class="summary-title">Router Status</div>
+            <div class="summary-text">Connected • Dual-band • Mock mode</div>
+          </div>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">General</div>
+          <button class="menu-item active" data-page="networkmap">Network Map</button>
+          <button class="menu-item" data-page="guest">Guest Network</button>
+          <button class="menu-item" data-page="qis">Quick Internet Setup</button>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">Advanced Settings</div>
+          <button class="menu-item" data-page="wireless">Wireless</button>
+          <button class="menu-item" data-page="lan">LAN</button>
+          <button class="menu-item" data-page="dhcp">DHCP Server</button>
+          <button class="menu-item" data-page="admin">Administration</button>
+        </div>
+
+        <div class="menu-group">
+          <div class="menu-title">Practice Tasks</div>
+          <button class="menu-item" data-page="challenge">Challenge Check</button>
+        </div>
+      </aside>
+
+      <main class="content-area">
+        <section id="page-networkmap" class="page active">
+          <div class="settings-toolbar section-tabs">
+            <button class="subtab active">General</button>
+          </div>
+          <div class="page-header">
+            <h2>Network Map</h2>
+            <p>Overview of internet, router, wireless, and client status.</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="status-card tall">
+              <div class="card-title">Internet Status</div>
+              <div class="status-row"><span>Status</span><strong id="internetStatus">Connected</strong></div>
+              <div class="status-row"><span>WAN IP</span><strong>100.64.12.88</strong></div>
+              <div class="status-row"><span>DNS</span><strong>8.8.8.8 / 1.1.1.1</strong></div>
+            </div>
+
+                        <div class="status-card hero">
+              <div class="card-title">Wireless Security Level</div>
+              <div class="hero-circle" id="securityBadge">WPA2/WPA3</div>
+              <div class="muted center">2.4 GHz SSID: <span id="ssid24Preview">SpectraHome_2.4G</span></div>
+              <div class="muted center">5 GHz SSID: <span id="ssid5Preview">SpectraHome_5G</span></div>
+            </div>
+
+            <div class="status-card tall">
+              <div class="card-title">Clients</div>
+              <div class="status-row"><span>Connected Devices</span><strong id="clientCount">12</strong></div>
+              <div class="status-row"><span>Guest Network</span><strong id="guestPreview">Disabled</strong></div>
+              <div class="status-row"><span>DHCP Range</span><strong id="dhcpPreview">192.168.50.2 - 192.168.50.100</strong></div>
+              <div class="client-link-wrap">
+                <a href="#" class="client-link" id="viewClientsLink">View List</a>
+              </div>
+            </div>
+
+            <div class="status-card map-card span-3">
+              <div class="card-title">Topology</div>
+              <div class="topology">
+                <div class="node">Internet</div>
+                <div class="link"></div>
+                <div class="node active-node">ASUS Router</div>
+                <div class="link"></div>
+                <div class="node">Clients</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-clients" class="page">
+          <div class="page-header">
+            <h2>Network Map - Clients</h2>
+            <p>View details of the 12 mock classroom devices connected to the router.</p>
+          </div>
+
+          <div class="settings-panel client-panel">
+            <div class="client-toolbar">
+              <div class="client-summary-pill">Total clients: <strong>12</strong></div>
+              <button class="btn small" onclick="goToPage('networkmap')">Back to Network Map</button>
+            </div>
+
+            <div class="client-table-wrap">
+              <table class="client-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Client Name</th>
+                    <th>Type</th>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>MAC Address</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="clientTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+                <section id="page-wireless" class="page">
+          <div class="page-header">
+            <h2>Wireless - General</h2>
+            <p>Configure separate 2.4 GHz and 5 GHz SSIDs, authentication method, and Wi-Fi password.</p>
+          </div>
+
+          <div class="settings-panel">
+            <div class="settings-toolbar">
+              <button class="subtab active wireless-tab" data-band="2.4GHz">2.4GHz</button>
+              <button class="subtab wireless-tab" data-band="5GHz">5GHz</button>
+              <button class="subtab">WPS</button>
+              <button class="subtab">Professional</button>
+            </div>
+
+            <div class="band-banner">
+              <div>
+                <div class="band-banner-title">Current band: <span id="currentBandLabel">2.4GHz</span></div>
+                <div class="band-banner-text">Use separate SSIDs so students can clearly identify which devices should join 2.4 GHz or 5 GHz.</div>
+              </div>
+              <div class="band-pill-wrap">
+                <span class="band-pill">IoT devices usually use 2.4 GHz</span>
+                <span class="band-pill">Laptops and tablets often prefer 5 GHz</span>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <label>Band</label>
+              <select id="bandSelect">
+                <option selected>2.4GHz</option>
+                <option>5GHz</option>
+              </select>
+
+              <label>SSID</label>
+              <input id="ssid" type="text" value="SpectraHome_2.4G" />
+
+              <label>Hide SSID</label>
+              <select id="hideSsid">
+                <option selected>No</option>
+                <option>Yes</option>
+              </select>
+
+              <label>Authentication Method</label>
+              <select id="authMethod">
+                <option>Open System</option>
+                <option>WPA2-Personal</option>
+                <option selected>WPA2/WPA3-Personal</option>
+                <option>WPA3-Personal</option>
+              </select>
+
+              <label>WPA Encryption</label>
+              <select id="encryption">
+                <option>AES</option>
+                <option selected>AES+GCMP</option>
+              </select>
+
+              <label>WPA Pre-Shared Key</label>
+              <input id="wifiPassword" type="text" value="StrongPass!24" />
+
+              <label>Channel bandwidth</label>
+              <select id="channelBandwidth">
+                <option selected>20/40 MHz</option>
+                <option>20 MHz</option>
+                <option>40 MHz</option>
+                <option>80 MHz</option>
+              </select>
+            </div>
+
+            <div class="dual-band-summary">
+              <div class="mini-card">
+                <div class="mini-card-title">2.4 GHz</div>
+                <div class="mini-card-row"><span>SSID</span><strong id="summary24Ssid">SpectraHome_2.4G</strong></div>
+                <div class="mini-card-row"><span>Security</span><strong id="summary24Auth">WPA2/WPA3-Personal</strong></div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-card-title">5 GHz</div>
+                <div class="mini-card-row"><span>SSID</span><strong id="summary5Ssid">SpectraHome_5G</strong></div>
+                <div class="mini-card-row"><span>Security</span><strong id="summary5Auth">WPA2/WPA3-Personal</strong></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" onclick="applyWireless()">Apply</button>
+              <button class="btn" onclick="resetWireless()">Cancel</button>
+            </div>
+            <div id="wirelessMsg" class="feedback"></div>
+          </div>
+        </section>
+
+        <section id="page-lan" class="page">
+          <div class="settings-toolbar section-tabs">
+            <button class="subtab active">LAN IP</button>
+            <button class="subtab">DHCP Server</button>
+            <button class="subtab">Route</button>
+            <button class="subtab">IPTV</button>
+            <button class="subtab">Switch Control</button>
+          </div>
+          <div class="page-header">
+            <h2>LAN - LAN IP</h2>
+            <p>Configure the router local IP address and subnet mask.</p>
+          </div>
+          <div class="settings-panel">
+            <div class="settings-toolbar">
+              <button class="subtab active">LAN IP</button>
+              <button class="subtab">DHCP Server</button>
+              <button class="subtab">Route</button>
+              <button class="subtab">IPTV</button>
+            </div>
+
+            <div class="form-grid">
+              <label>IP Address</label>
+              <input id="routerIp" type="text" value="192.168.50.1" />
+
+              <label>Subnet Mask</label>
+              <input id="subnetMask" type="text" value="255.255.255.0" />
+
+              <label>Host Name</label>
+              <input id="hostName" type="text" value="asusrouter" />
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" onclick="applyLan()">Apply</button>
+              <button class="btn" onclick="resetLan()">Cancel</button>
+            </div>
+            <div id="lanMsg" class="feedback"></div>
+          </div>
+        </section>
+
+        <section id="page-dhcp" class="page">
+          <div class="page-header">
+            <h2>LAN - DHCP Server</h2>
+            <p>Set the DHCP allocation range for classroom devices.</p>
+          </div>
+          <div class="settings-panel">
+            <div class="form-grid">
+              <label>Enable the DHCP Server</label>
+              <select id="dhcpEnabled">
+                <option selected>Yes</option>
+                <option>No</option>
+              </select>
+
+              <label>IP Pool Starting Address</label>
+              <input id="dhcpStart" type="text" value="192.168.50.2" />
+
+              <label>IP Pool Ending Address</label>
+              <input id="dhcpEnd" type="text" value="192.168.50.100" />
+
+              <label>Lease Time</label>
+              <input id="leaseTime" type="text" value="86400" />
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" onclick="applyDhcp()">Apply</button>
+              <button class="btn" onclick="resetDhcp()">Cancel</button>
+            </div>
+            <div id="dhcpMsg" class="feedback"></div>
+          </div>
+        </section>
+
+        <section id="page-guest" class="page">
+          <div class="page-header">
+            <h2>Guest Network</h2>
+            <p>Create a separate Wi-Fi for visitors.</p>
+          </div>
+          <div class="settings-panel">
+            <div class="form-grid">
+              <label>Enable Guest Network</label>
+              <select id="guestEnabled">
+                <option>Disabled</option>
+                <option selected>Enabled</option>
+              </select>
+
+              <label>Guest SSID</label>
+              <input id="guestSsid" type="text" value="Classroom_Guest" />
+
+              <label>Authentication Method</label>
+              <select id="guestAuth">
+                <option selected>WPA2-Personal</option>
+                <option>Open System</option>
+              </select>
+
+              <label>Password</label>
+              <input id="guestPassword" type="text" value="GuestPass123" />
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" onclick="applyGuest()">Apply</button>
+              <button class="btn" onclick="resetGuest()">Cancel</button>
+            </div>
+            <div id="guestMsg" class="feedback"></div>
+          </div>
+        </section>
+
+        <section id="page-admin" class="page">
+          <div class="settings-toolbar section-tabs">
+            <button class="subtab active">Operation Mode</button>
+            <button class="subtab">System</button>
+            <button class="subtab">Firmware Upgrade</button>
+            <button class="subtab">Restore/Save/Upload Setting</button>
+            <button class="subtab">Feedback</button>
+            <button class="subtab">Privacy</button>
+          </div>
+          <div class="page-header">
+            <h2>Administration - System</h2>
+            <p>Mock admin settings for classroom discussion.</p>
+          </div>
+          <div class="settings-panel">
+            <div class="form-grid">
+              <label>Router Login Name</label>
+              <input type="text" value="admin" />
+
+              <label>New Login Password</label>
+              <input id="adminPassword" type="text" value="admin123" />
+
+              <label>Enable Web Access from WAN</label>
+              <select>
+                <option selected>No</option>
+                <option>Yes</option>
+              </select>
+
+              <label>Time Zone</label>
+              <select>
+                <option selected>(GMT+08:00) Singapore</option>
+                <option>(GMT+09:00) Tokyo</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button class="btn primary" onclick="showToast('Administration settings saved in mock mode.')">Apply</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-qis" class="page">
+          <div class="page-header">
+            <h2>Quick Internet Setup</h2>
+            <p>Teacher can use this page to explain the setup flow.</p>
+          </div>
+          <div class="qis-steps">
+            <div class="qis-step"><strong>1</strong><span>Detect internet connection</span></div>
+            <div class="qis-step"><strong>2</strong><span>Set router login</span></div>
+            <div class="qis-step"><strong>3</strong><span>Set SSID and Wi-Fi password</span></div>
+            <div class="qis-step"><strong>4</strong><span>Apply and reconnect devices</span></div>
+          </div>
+        </section>
+
+        
+
+
+
+<section id="page-challenge" class="page">
+  <div class="page-header">
+    <h2>Challenge Check</h2>
+    <p>Students can practise changing dual-band wireless, LAN, and admin settings. Choose any challenge set below.</p>
+  </div>
+  <div class="challenge-box">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 16px 8px;">
+      <button class="btn primary active challenge-tab" onclick="showChallengeSet(1)" id="challengeTab1">Set 1</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(2)" id="challengeTab2">Set 2</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(3)" id="challengeTab3">Set 3</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(4)" id="challengeTab4">Set 4</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(5)" id="challengeTab5">Set 5</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(6)" id="challengeTab6">Set 6</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(7)" id="challengeTab7">Set 7</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(8)" id="challengeTab8">Set 8</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(9)" id="challengeTab9">Set 9</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(10)" id="challengeTab10">Set 10</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(11)" id="challengeTab11">Set 11</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(12)" id="challengeTab12">Set 12</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(13)" id="challengeTab13">Set 13</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(14)" id="challengeTab14">Set 14</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(15)" id="challengeTab15">Set 15</button>
+<button class="btn challenge-tab" onclick="showChallengeSet(16)" id="challengeTab16">Set 16</button>
+    </div>
+    
+    <div id="challengeSet1" class="challenge-set">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Sec2_IoT_Lab_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Sec2_IoT_Lab_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>IoT@2026Lab</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.10.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1001</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet2" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>SmartHome_Class24</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>SmartHome_Class5</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>HomeLab#2468</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.20.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1002</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet3" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>BlkB_IoT_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>BlkB_IoT_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>Router!1357</strong>.</li>
+        <li>Change router LAN IP to <strong>10.0.0.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1003</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet4" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>TrainNet_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>TrainNet_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>Secure@9876</strong>.</li>
+        <li>Change router LAN IP to <strong>172.16.1.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1004</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet5" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Lab5_Devices_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Lab5_Devices_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>ClassNet@5050</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.30.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1005</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet6" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Sec3_STEM_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Sec3_STEM_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>STEMlab#6060</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.40.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1006</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet7" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>MakerRoom_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>MakerRoom_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>MakeIT!7070</strong>.</li>
+        <li>Change router LAN IP to <strong>10.10.10.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1007</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet8" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>IoT_TestBed_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>IoT_TestBed_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>TestBed@8080</strong>.</li>
+        <li>Change router LAN IP to <strong>172.16.10.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1008</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet9" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>RoomA_Net_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>RoomA_Net_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>RoomA#9090</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.60.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1009</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet10" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>DemoRouter_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>DemoRouter_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>DemoNet!1010</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.70.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1010</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet11" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Sec1_LabA_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Sec1_LabA_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>LabA@1111</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.80.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1011</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet12" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Sec4_Project_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Sec4_Project_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>Project#1212</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.90.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1012</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet13" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>Innovation_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>Innovation_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>Innovate!1313</strong>.</li>
+        <li>Change router LAN IP to <strong>10.20.30.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1013</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet14" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>RoomB_STEM_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>RoomB_STEM_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>STEMroom@1414</strong>.</li>
+        <li>Change router LAN IP to <strong>172.20.14.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1014</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet15" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>AppliedAI_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>AppliedAI_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>Applied#1515</strong>.</li>
+        <li>Change router LAN IP to <strong>192.168.110.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1015</strong>.</li>
+      </ol>
+    </div>
+    
+    <div id="challengeSet16" class="challenge-set" style="display:none;">
+      <ol>
+        <li>Change the <strong>2.4 GHz SSID</strong> to <strong>TestZone_24G</strong>.</li>
+        <li>Change the <strong>5 GHz SSID</strong> to <strong>TestZone_5G</strong>.</li>
+        <li>Set authentication to <strong>WPA2/WPA3-Personal</strong> for both bands.</li>
+        <li>Set the Wi-Fi password for <strong>both bands</strong> to <strong>ZonePass!1616</strong>.</li>
+        <li>Change router LAN IP to <strong>10.16.16.1</strong>.</li>
+        <li>Change the <strong>admin password</strong> to <strong>Admin@1016</strong>.</li>
+      </ol>
+    </div>
+    
+    <div class="actions">
+      <button class="btn primary" onclick="checkChallenge()">Check Answers</button>
+    </div>
+    <div id="challengeMsg" class="feedback"></div>
+  </div>
+</section>
+
+
+
+
+      </main>
+    </div>
+
+    <div class="footer-strip">
+      <span>Help &amp; Support</span>
+      <span>Manual</span>
+      <span>Utility</span>
+      <span>Product Registration</span>
+      <span>Feedback</span>
+      <span>FAQ</span>
+    </div>
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

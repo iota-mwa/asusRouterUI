@@ -1,4 +1,4 @@
-ASUS-Style Router Training Mock
+ASUS-Style Router Training Mock for students
 
 This mock website is classroom-safe and ASUS-inspired in look and feel.
 It is not copied from ASUS firmware files.
